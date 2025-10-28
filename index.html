@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dev Blog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f8f9fa;
+      color: #212529;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #20c997;
+      text-decoration: none;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      color: #495057;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+
+    nav a:hover, nav a.active {
+      color: #20c997;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .post-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .post-thumbnail {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .post-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .post-thumbnail .icon {
+      font-size: 3rem;
+    }
+
+    .post-actions {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+
+    .post-card:hover .post-actions {
+      opacity: 1;
+    }
+
+    .action-button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .action-button:hover {
+      background: white;
+      transform: scale(1.1);
+    }
+
+    .action-button.edit {
+      color: #20c997;
+    }
+
+    .action-button.delete {
+      color: #dc3545;
+    }
+
+    .post-content {
+      padding: 1.5rem;
+    }
+
+    .post-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #212529;
+      cursor: pointer;
+    }
+
+    .post-excerpt {
+      color: #6c757d;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #868e96;
+      font-size: 0.9rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e9ecef;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+
+    .write-button {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      background: #20c997;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 4px 12px rgba(32, 201, 151, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s;
+      border: none;
+    }
+
+    .write-button:hover {
+      transform: scale(1.1);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      animation: fadeIn 0.2s;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      border-radius: 12px;
+      overflow-y: auto;
+      animation: slideUp 0.3s;
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .close-button {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #868e96;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+    }
+
+    .close-button:hover {
+      color: #212529;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #20c997;
+    }
+
+    textarea {
+      min-height: 400px;
+      resize: vertical;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      line-height: 1.6;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      padding: 0.5rem 0.75rem;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .toolbar-btn:hover {
+      background: #e9ecef;
+      border-color: #20c997;
+    }
+
+    #postContent {
+      border-radius: 0 0 8px 8px;
+    }
+
+    .markdown-help {
+      margin-top: 0.5rem;
+      color: #6c757d;
+      font-size: 0.85rem;
+    }
+
+    .image-upload-section {
+      margin-bottom: 1rem;
+    }
+
+    .image-upload-label {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #e9ecef;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 0.5rem;
+    }
+
+    .image-upload-label:hover {
+      background: #dee2e6;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    .image-preview {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+
+    .image-preview-container {
+      position: relative;
+      display: none;
+    }
+
+    .image-preview-container.active {
+      display: block;
+    }
+
+    .remove-image {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    button {
+      background: #20c997;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1ba87e;
+    }
+
+    button.secondary {
+      background: #6c757d;
+    }
+
+    button.secondary:hover {
+      background: #5a6268;
+    }
+
+    .delete-confirm {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .delete-confirm h3 {
+      margin-bottom: 1rem;
+      color: #212529;
+    }
+
+    .delete-confirm p {
+      color: #6c757d;
+      margin-bottom: 1.5rem;
+    }
+
+    .delete-confirm-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .delete-confirm-buttons button {
+      flex: 1;
+    }
+
+    .delete-button {
+      background: #dc3545 !important;
+    }
+
+    .delete-button:hover {
+      background: #c82333 !important;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #868e96;
+    }
+
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .posts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      nav a {
+        margin-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <a href="index.html" class="logo">devlog</a>
+    <nav>
+      <a href="index.html" class="active">Posts</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Developer's Journal</h1>
+  <p>Learn, experience, and share</p>
+</div>
+
+<div class="container">
+  <div class="posts-grid" id="postsGrid"></div>
+</div>
+
+<button class="write-button" id="writeButton">+</button>
+
+<div class="modal" id="writeModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">New Post</h2>
+      <button class="close-button" id="closeModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" id="postTitle" placeholder="Enter title">
+      <input type="text" id="postTags" placeholder="Tags (comma separated)">
+      <div class="image-upload-section">
+        <label for="imageInput" class="image-upload-label">📷 Upload Image</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <div class="image-preview-container" id="imagePreviewContainer">
+          <img id="imagePreview" class="image-preview" alt="Preview">
+          <button class="remove-image" id="removeImage">&times;</button>
+        </div>
+      </div>
+      <div class="editor-toolbar">
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('bold')" title="Bold">𝐁</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('italic')" title="Italic">𝐼</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('h1')" title="Heading 1">H1</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('h2')" title="Heading 2">H2</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('h3')" title="Heading 3">H3</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('quote')" title="Quote">"</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('code')" title="Code">&lt;/&gt;</button>
+        <button type="button" class="toolbar-btn" onclick="insertMarkdown('link')" title="Link">🔗</button>
+      </div>
+      <textarea id="postContent" placeholder="# Enter heading
+
+**Bold text** or *italic text*
+- List item
+1. Numbered list
+
+> Quote
+
+\`code\` or
+\`\`\`
+code block
+\`\`\`
+
+[Link text](URL)"></textarea>
+      <div class="markdown-help">
+        <small>💡 Markdown syntax supported. Use toolbar buttons or type directly.</small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="secondary" id="cancelButton">Cancel</button>
+      <button id="publishButton">Publish</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteModal">
+  <div class="delete-confirm">
+    <h3>Delete Post</h3>
+    <p>Are you sure you want to delete this post?<br>This action cannot be undone.</p>
+    <div class="delete-confirm-buttons">
+      <button class="secondary" id="cancelDelete">Cancel</button>
+      <button class="delete-button" id="confirmDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let posts = [];
+  let currentEditIndex = null;
+  let currentDeleteIndex = null;
+  let currentImageData = null;
+
+  const samplePosts = [
+    {
+      id: Date.now() + 1,
+      title: 'Circuit Basics - First Steps into Electronics',
+      content: `Hey! I'm a high school sophomore. Here's what I learned about circuits before building my guitar pedal 😊
+
+# The 3 Elements of Electricity
+
+## Voltage (V) - The Pushing Force
+Think of a 9V battery! Like water tank height - higher = stronger flow.
+
+## Current (I) - What Actually Flows
+Units: A (Ampere), we use mA (milliampere)
+Guitar pedals usually consume **10~50mA**
+
+## Resistance (R) - Flow Resistance
+Units: Ω (Ohm), kΩ (kilo-ohm)
+1kΩ = 1,000Ω
+
+# Ohm's Law ⚡
+
+**V = I × R** (Just remember this one!)
+
+Example) 9V battery + 1kΩ resistor = ?
+\`\`\`
+I = V ÷ R = 9 ÷ 1,000 = 0.009A = 9mA
+\`\`\`
+
+# Main Components
+
+## Resistor
+- Read values by color code
+- **Memory trick**: Black-Brown-Red-Orange-Yellow-Green-Blue-Violet-Gray-White (0~9)
+- Example: Brown-Black-Red-Gold = 1-0-×100 = **1kΩ**
+
+## Capacitor
+**Ceramic**: Small, no polarity
+**Electrolytic**: Large, HAS polarity (long leg = +)
+> I plugged one backwards and it went "BOOM!"... Be careful!
+
+## Diode
+Only lets current flow one way
+**Black stripe side** is cathode (-)
+
+## Transistor
+Amplifies signals! Core of guitar pedals
+- E (Emitter) - B (Base) - C (Collector)
+- We'll use 2N5088
+
+# Using a Multimeter
+
+₩5,000 from Daiso works great!
+
+1. **Voltage**: DCV mode, parallel connection
+2. **Resistance**: Ω mode, touch both ends
+3. **Continuity Test**: Beeps if connected (perfect for checking solder joints)
+
+# Breadboard
+
+Test before soldering!
+- Vertical rows: Power (+, -)
+- Horizontal rows: 5 holes connected
+- Make mistakes? Just pull it out!
+
+# Safety First ⚠️
+
+1. **Ventilation** when soldering
+2. Soldering iron is **350°C** - watch for burns
+3. Check capacitor **polarity**
+4. Check for **shorts** before powering on
+
+Next up: how guitar pedal circuits actually work!`,
+      date: new Date('2024-10-20').toISOString(),
+      tags: ['Electronics', 'Basics', 'High School'],
+      icon: '⚡',
+      image: null
+    },
+    {
+      id: Date.now() + 2,
+      title: 'How Guitar Pedal Circuits Work',
+      content: `Today I learned how pedals change your guitar sound!
+
+# Guitar Signal Characteristics
+
+Guitar output is **super weak**
+- Voltage: 0.1~1V (tiny!)
+- Frequency: 82Hz~1,200Hz
+- Needs amplification!
+
+# 5 Stages of Pedal Circuit
+
+## Stage 1: Input
+\`\`\`
+Guitar jack → Capacitor → Circuit
+\`\`\`
+- Capacitor blocks DC
+- Only audio signal passes
+
+## Stage 2: Gain Stage (KEY!)
+Boost signal using **transistor** or **Op-Amp**
+
+### Transistor Amplification
+- Small current at base → Big current at collector
+- Like a faucet!
+- Gain = 20~100x
+
+## Stage 3: Tone Control
+Adjust frequency for sound color
+
+**High-Pass Filter**: Cut bass (tight sound)
+**Low-Pass Filter**: Cut treble (smooth sound)
+
+## Stage 4: Clipping (Distortion!)
+"Clip" signal at certain voltage = crunch
+
+**Soft Clipping** (LED)
+- Smooth crunch
+- Overdrive tone
+
+**Hard Clipping** (Diode)
+- Hard crunch
+- Distortion tone
+
+## Stage 5: Output
+\`\`\`
+Volume pot → Capacitor → Output jack
+\`\`\`
+
+# Power Circuit
+
+## Using 9V Battery
+- DC jack (center negative)
+- Add diode for reverse voltage protection
+
+## Power Filtering
+\`\`\`
+9V → [Resistor] → [Capacitor] → Circuit
+\`\`\`
+Removes noise!
+
+# Switching Circuit
+
+## True Bypass
+Uses 3PDT switch
+- Completely bypasses when OFF
+- Keeps pure guitar tone
+
+# Grounding (GND) is Important!
+
+**Star Ground**: All GND to one point!
+- Prevents hum noise
+- Clean sound
+
+> I did ground carelessly at first and got terrible "hummm" sound ㅠㅠ
+
+# Pedal Types
+
+## Booster
+- No clipping
+- Just amplification
+- Easiest to build! (what we're making)
+
+## Overdrive
+- Moderate gain
+- Soft clipping
+- Simulates amp crunch
+
+## Distortion
+- High gain
+- Hard clipping
+- Compressed sustain
+
+Next post: introducing the **LPB-1 Booster** we'll actually build!`,
+      date: new Date('2024-10-21').toISOString(),
+      tags: ['Guitar Pedal', 'Circuit Theory', 'Amplification'],
+      icon: '🎸',
+      image: null
+    },
+    {
+      id: Date.now() + 3,
+      title: 'Building the LPB-1 Booster Pedal',
+      content: `Finally! Here's the pedal we're gonna build 🎉
+
+# What is LPB-1?
+
+Legendary booster pedal from 1968
+- Uses only **1 transistor**
+- About **15 components**
+- Perfect for beginners!
+
+## Features
+- About **20x** amplification (26dB)
+- Transparent tone (clean boost)
+- Naturally pushes your amp
+
+# How It Works
+
+## Signal Flow
+\`\`\`
+Guitar → Capacitor → Volume Pot → Transistor → Output
+\`\`\`
+
+## Transistor (2N5088)
+Pin layout (flat side facing you):
+\`\`\`
+E  B  C
+└──┴──┘
+\`\`\`
+
+## Bias Setup
+Transistor needs proper voltage to work
+
+**Normal voltages**:
+- Base: 0.7~0.9V
+- Emitter: 0.1~0.3V
+- Collector: 4~5V
+
+## Amplification Principle
+Small signal at base → Big signal at collector!
+
+**Gain calculation**:
+\`\`\`
+Gain = R4 / R3 = 15kΩ / 390Ω ≈ 38x
+(Actually about 20~30x)
+\`\`\`
+
+# Complete Schematic
+
+\`\`\`
+9V ─┬─ [470Ω] ─ [47μF] ─ VCC
+    │    Power Filter
+    │
+    ├─ [430kΩ] ─ Base
+    │
+Input ─ [0.1μF] ─ [100kΩ Vol] ─ Base
+                                  │
+                              2N5088
+                             E  B  C
+                             │     │
+                         [390Ω] [15kΩ]
+                         [10μF]    │
+                             │     │
+                            GND    ├─ [10μF] ─ Output
+                                   │
+                                  GND
+\`\`\`
+
+# Parts List
+
+**Resistors**:
+- 430kΩ × 1
+- 43kΩ × 1
+- 15kΩ × 1
+- 470Ω × 1
+- 390Ω × 1
+- 1MΩ × 2 (pulldown)
+
+**Capacitors**:
+- 0.1μF (film) × 1
+- 10μF (electrolytic) × 2
+- 47μF (electrolytic) × 1
+
+**Others**:
+- 2N5088 transistor × 1
+- 1N4001 diode × 1
+- 100kΩ A-type pot × 1
+
+> All parts cost about ₩3,000!
+
+# Circuit Modifications
+
+## Gain Control
+- R3 to 470Ω → Less gain
+- R3 to 220Ω → More gain
+
+## Frequency Control
+- C2 to 4.7μF → Tight sound
+- C2 to 22μF → Full range
+
+# Expected Sound
+
+**Clean Boost**: Volume up while keeping guitar tone
+**Overdrive**: Natural crunch when amp volume is high
+
+# Measured Specs
+
+- **Gain**: 20~30x
+- **Frequency**: 50Hz~10kHz
+- **Current**: 1~3mA (long battery life!)
+
+Next: parts and tools we need!`,
+      date: new Date('2024-10-22').toISOString(),
+      tags: ['LPB-1', 'Booster', 'Build'],
+      icon: '🔧',
+      image: null
+    },
+    {
+      id: Date.now() + 4,
+      title: 'Complete Parts and Tools List',
+      content: `Read this before buying parts!
+
+# Electronic Components
+
+## Resistors (about ₩200)
+- R1: 430kΩ
+- R2: 43kΩ
+- R3: 390Ω
+- R4: 15kΩ
+- R5: 470Ω
+- LED: 4.7kΩ
+- Pulldown: 1MΩ × 2
+
+> Tip: Resistor kit = 100pcs for ₩5,000!
+
+## Capacitors (about ₩500)
+**Film**: 0.1μF × 1 (signal path)
+**Electrolytic**: 10μF × 2, 47μF × 1
+
+**Watch polarity!** Long leg = +
+
+## Transistor (₩300)
+2N5088 × 1 (get 1 spare!)
+
+**Pin order**: E-B-C (flat side front)
+
+## Diode (₩50)
+1N4001 × 1 (reverse voltage protection)
+
+## Potentiometer (₩1,500)
+100kΩ **A-type** (Audio Taper)
+- 16mm size
+- Knob included
+
+## Others
+- 5mm LED × 1 (₩500)
+- 1/4" jacks × 2 (₩1,000)
+- DC jack × 1 (₩500)
+- 3PDT switch × 1 (₩3,000)
+- Battery snap × 1 (₩100)
+
+**Total parts: about ₩8,000**
+
+# Enclosure (Case)
+
+## Hammond 1590B (₩7,000)
+- Size: 112 × 60 × 31mm
+- Standard size
+- Aluminum
+
+> Pre-drilled version recommended! (+₩2,000)
+
+# PCB
+
+**Stripboard** (₩500)
+- 5cm × 7cm
+- Stripboard recommended
+
+# Essential Tools
+
+## Soldering Tools (about ₩30,000)
+
+**Soldering Iron**
+- Temperature control recommended (Yihua 936B, ₩20,000)
+- Or Daiso (₩5,000)
+
+**Solder**
+- Leaded solder (Sn63/Pb37)
+- 0.8mm thickness
+- Ventilation essential!
+
+**Iron Stand** (must have!)
+
+## Measurement
+
+**Multimeter** (₩5,000)
+- Daiso version is fine!
+- Measure voltage, resistance, continuity
+
+## Cutting Tools (₩10,000)
+
+- Wire cutters (cut component legs)
+- Wire strippers (strip wires)
+- Long nose pliers
+
+> ₩3,000 each at Daiso!
+
+## Drilling Tools (₩30,000)
+
+**Electric Drill** or hand drill
+**Drill bits**:
+- 3mm: screws
+- 6mm: LED
+- 8mm: pot
+- 10mm: jacks
+- 12mm: switch
+
+**Step drill** (highly recommended! ₩20,000)
+
+# Consumables
+
+- Wires (red, black, others)
+- Shielded cable
+- Heat shrink tubing
+- Cable ties
+
+# Testing Equipment
+
+## Breadboard (₩3,000)
+**Essential!** Test before soldering
+
+## Jumper wire kit (₩2,000)
+
+## Guitar cables × 2
+
+# Where to Buy
+
+## Domestic
+- **Device Mart**: Fast shipping
+- **Daiso**: Tools, multimeter
+- **Eleparts**: Cheap
+
+## International
+- **AliExpress**: Very cheap (2~4 weeks shipping)
+- **Taobao**: Various enclosures
+
+# Budget Summary
+
+## Minimum Budget
+- Electronic parts: ₩8,000
+- Enclosure: ₩5,000
+- PCB: ₩500
+**Total: ₩13,500**
+
+## Tools (one-time)
+- Soldering iron: ₩20,000
+- Multimeter: ₩5,000
+- Tools: ₩10,000
+- Drill: ₩30,000
+**Total: ₩65,000**
+
+**Total investment: about ₩80,000**
+(Next pedals only need parts!)
+
+# Shopping Checklist
+
+Electronic parts:
+- [ ] 7 types of resistors
+- [ ] 4 capacitors
+- [ ] Transistor
+- [ ] Diode
+- [ ] Pot, LED
+
+Connectors:
+- [ ] 2 jacks
+- [ ] DC jack
+- [ ] 3PDT switch
+
+Case:
+- [ ] Enclosure
+- [ ] Knob
+- [ ] PCB
+
+Tools:
+- [ ] Soldering iron set
+- [ ] Multimeter
+- [ ] Cutters, strippers
+- [ ] Drill
+
+Next post: the actual **build process**!`,
+      date: new Date('2024-10-23').toISOString(),
+      tags: ['Parts', 'Shopping List', 'Tools'],
+      icon: '🛠️',
+      image: null
+    },
+    {
+      id: Date.now() + 5,
+      title: 'Build Process - Breadboard to Completion',
+      content: `Let's start building! Step by step 🎉
+
+# Step 1: Breadboard Test
+
+## Why Breadboard First?
+> Test before soldering! Mistakes? Just pull it out and reuse parts
+
+## Layout Order
+\`\`\`
+1. Set power rails (+9V, GND)
+2. Place transistor in center
+3. Connect resistors
+4. Connect capacitors
+5. Connect input/output
+\`\`\`
+
+## Voltage Check (Important!)
+**Use multimeter**:
+- VCC: 9V ✓
+- Base: 0.7~0.9V ✓
+- Collector: 4~5V ✓
+
+> If voltage is weird, check resistor values!
+
+## Signal Test
+\`\`\`
+Connect guitar → Check if sound works
+\`\`\`
+
+**Working? Next step!**
+
+# Step 2: PCB Layout
+
+## Using Stripboard
+Plan component placement first
+
+**Layout principles**:
+- Follow signal flow direction
+- Power filter at entrance
+- Gather ground at one point (star ground)
+
+## Component spacing
+Minimum 2.54mm (1 hole)
+
+> Sketch it on paper first!
+
+# Step 3: Soldering
+
+## Prep
+- Preheat iron (350~380°C)
+- Secure PCB
+- Ventilate!
+
+## Soldering Order
+
+**1. Resistors (low components first)**
+\`\`\`
+Bend → Insert → Spread legs → Solder → Cut
+\`\`\`
+
+**2. Diode**
+Check black stripe direction!
+
+**3. Capacitors**
+- Film: no polarity
+- Electrolytic: long leg = +
+
+**4. Transistor (last)**
+- Check E-B-C order
+- Avoid overheating! (under 3 seconds)
+
+## Good Solder Joint
+- Volcano shape
+- Smooth slope
+- Hole completely filled
+
+> Ugly at first is OK! Practice makes perfect
+
+## After Soldering Check
+1. Continuity test with multimeter
+2. Check for shorts
+3. Measure component values
+
+# Step 4: Enclosure Work
+
+## Hole Positions
+\`\`\`
+[LED]
+[Pot]
+[Input] [Output]
+[Switch] [DC]
+\`\`\`
+
+## Drill Sizes
+- LED: 6mm
+- Pot: 8mm
+- Jacks: 10mm
+- Switch: 12mm
+
+## Drilling Tips
+1. **Center punch** essential! (prevents slip)
+2. Start with small pilot hole
+3. Step up gradually
+4. Slow and steady pressure
+
+> Switch hole needs square reamer
+
+# Step 5: Wiring
+
+## Wire Color Code
+- Red: +9V
+- Black: GND
+- Other colors: signal
+
+## 3PDT Switch Wiring
+\`\`\`
+1  2  3
+4  5  6
+7  8  9
+\`\`\`
+
+**Connections**:
+- 1: Input jack
+- 4: PCB input
+- 7: Output jack (bypass)
+- 3: PCB output
+- 6: Output jack
+- 9: Input jack (bypass)
+- 2: LED +
+- 5: 9V (through resistor)
+- 8: GND
+
+## Use Shielded Cable
+\`\`\`
+Input → Circuit
+Circuit → Switch
+Switch → Output
+\`\`\`
+
+# Step 6: Final Testing
+
+## Power OFF
+1. Check for shorts (between 9V-GND)
+2. Should read infinity (OL)
+
+## Power ON
+1. Is 9V coming in?
+2. Does LED light up?
+3. Check bias voltages
+
+## Sound Test
+\`\`\`
+Connect guitar → Switch ON → Check sound!
+\`\`\`
+
+**Check**:
+- Volume works?
+- No noise?
+- Enough gain?
+
+# Step 7: Final Assembly
+
+1. Tighten all screws
+2. Stick rubber feet
+3. Install battery
+4. Organize cables
+
+# Troubleshooting
+
+## No Sound
+- Check input/output jacks
+- Battery voltage (over 7V?)
+- Transistor pin order
+
+## Too Much Noise
+- Check ground
+- Power filter (R5, C4)
+- Use shielded cable
+
+## Weak Gain
+- Measure transistor hFE
+- Check C2 polarity
+- Verify R4 value (15kΩ?)
+
+# Complete! 🎊
+
+Congrats! First guitar pedal done!
+
+## Next Steps
+- Try other circuits
+- Customizations
+- Paint job
+
+# My Thoughts
+
+It was hard at first but making it myself feels amazing!
+Sound is better than expected, and understanding how it works is fun.
+
+You should definitely try it! 😊
+
+**Total build time**: 4~6 hours
+**Difficulty**: ★★☆☆☆
+**Satisfaction**: ★★★★★`,
+      date: new Date('2024-10-24').toISOString(),
+      tags: ['Build Process', 'Soldering', 'DIY'],
+      icon: '⚙️',
+      image: null
+    }
+  ];
+
+  function init() {
+    const stored = localStorage.getItem('blogPosts');
+    if (stored) {
+      posts = JSON.parse(stored);
+    } else {
+      posts = JSON.parse(JSON.stringify(samplePosts));
+      savePosts();
+    }
+
+    const editIndex = localStorage.getItem('editPostIndex');
+    if (editIndex !== null) {
+      const index = parseInt(editIndex);
+      if (!isNaN(index) && index >= 0 && index < posts.length) {
+        editPost(index);
+      }
+      localStorage.removeItem('editPostIndex');
+    }
+
+    renderPosts();
+  }
+
+  function savePosts() {
+    localStorage.setItem('blogPosts', JSON.stringify(posts));
+  }
+
+  function renderPosts() {
+    const grid = document.getElementById('postsGrid');
+    grid.innerHTML = '';
+
+    if (posts.length === 0) {
+      grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <h3>📝</h3>
+                        <h3>No posts yet</h3>
+                        <p>Click the + button in the bottom right to write your first post!</p>
+                    </div>
+                `;
+      return;
+    }
+
+    posts.forEach((post, index) => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+
+      const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
+      const displayDate = new Date(post.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).replace(/\//g, '.');
+
+      card.innerHTML = `
+                    <div class="post-thumbnail">
+                        ${post.image ? `<img src="${post.image}" alt="${post.title}">` : `<span class="icon">${post.icon}</span>`}
+                        <div class="post-actions">
+                            <button class="action-button edit" data-index="${index}">✏️</button>
+                            <button class="action-button delete" data-index="${index}">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="post-content" data-index="${index}">
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-excerpt">${excerpt}</p>
+                        <div class="post-meta">
+                            <div>
+                                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            <span>${displayDate}</span>
+                        </div>
+                    </div>
+                `;
+
+      card.querySelector('.post-content').addEventListener('click', function(e) {
+        if (!e.target.closest('.action-button')) {
+          viewPost(index);
+        }
+      });
+
+      card.querySelector('.edit').addEventListener('click', function(e) {
+        e.stopPropagation();
+        editPost(index);
+      });
+
+      card.querySelector('.delete').addEventListener('click', function(e) {
+        e.stopPropagation();
+        deletePost(index);
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function viewPost(index) {
+    localStorage.setItem('currentPostIndex', index);
+    window.location.href = 'post.html';
+  }
+
+  function openWriteModal() {
+    currentEditIndex = null;
+    currentImageData = null;
+    document.getElementById('modalTitle').textContent = 'New Post';
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postTags').value = '';
+    document.getElementById('postContent').value = '';
+    document.getElementById('publishButton').textContent = 'Publish';
+    document.getElementById('imagePreviewContainer').classList.remove('active');
+    document.getElementById('writeModal').classList.add('active');
+  }
+
+  function editPost(index) {
+    currentEditIndex = index;
+    const post = posts[index];
+
+    document.getElementById('modalTitle').textContent = 'Edit Post';
+    document.getElementById('postTitle').value = post.title;
+    document.getElementById('postTags').value = post.tags.join(', ');
+    document.getElementById('postContent').value = post.content;
+    document.getElementById('publishButton').textContent = 'Update';
+
+    if (post.image) {
+      currentImageData = post.image;
+      document.getElementById('imagePreview').src = post.image;
+      document.getElementById('imagePreviewContainer').classList.add('active');
+    } else {
+      currentImageData = null;
+      document.getElementById('imagePreviewContainer').classList.remove('active');
+    }
+
+    document.getElementById('writeModal').classList.add('active');
+  }
+
+  function deletePost(index) {
+    currentDeleteIndex = index;
+    document.getElementById('deleteModal').classList.add('active');
+  }
+
+  function savePost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const tags = document.getElementById('postTags').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+
+    if (!title) {
+      alert('Please enter a title.');
+      return;
+    }
+
+    if (!content) {
+      alert('Please enter content.');
+      return;
+    }
+
+    const postData = {
+      id: currentEditIndex !== null ? posts[currentEditIndex].id : Date.now(),
+      title: title,
+      content: content,
+      date: currentEditIndex !== null ? posts[currentEditIndex].date : new Date().toISOString(),
+      tags: tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+      icon: '📝',
+      image: currentImageData
+    };
+
+    if (currentEditIndex !== null) {
+      posts[currentEditIndex] = postData;
+    } else {
+      posts.unshift(postData);
+    }
+
+    savePosts();
+    renderPosts();
+    closeWriteModal();
+  }
+
+  function confirmDeletePost() {
+    if (currentDeleteIndex !== null) {
+      posts.splice(currentDeleteIndex, 1);
+      savePosts();
+      renderPosts();
+      closeDeleteModal();
+    }
+  }
+
+  function closeWriteModal() {
+    document.getElementById('writeModal').classList.remove('active');
+    currentEditIndex = null;
+    currentImageData = null;
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+    currentDeleteIndex = null;
+  }
+
+  document.getElementById('imageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        currentImageData = event.target.result;
+        document.getElementById('imagePreview').src = currentImageData;
+        document.getElementById('imagePreviewContainer').classList.add('active');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('removeImage').addEventListener('click', function() {
+    currentImageData = null;
+    document.getElementById('imageInput').value = '';
+    document.getElementById('imagePreviewContainer').classList.remove('active');
+  });
+
+  document.getElementById('writeButton').addEventListener('click', openWriteModal);
+  document.getElementById('closeModal').addEventListener('click', closeWriteModal);
+  document.getElementById('cancelButton').addEventListener('click', closeWriteModal);
+  document.getElementById('publishButton').addEventListener('click', savePost);
+  document.getElementById('cancelDelete').addEventListener('click', closeDeleteModal);
+  document.getElementById('confirmDelete').addEventListener('click', confirmDeletePost);
+
+  document.getElementById('writeModal').addEventListener('click', function(e) {
+    if (e.target === this) closeWriteModal();
+  });
+
+  document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+  });
+
+  function insertMarkdown(type) {
+    const textarea = document.getElementById('postContent');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    let replacement = '';
+    let cursorOffset = 0;
+
+    switch(type) {
+      case 'bold':
+        replacement = `**${selectedText || 'Bold text'}**`;
+        cursorOffset = selectedText ? replacement.length : -2;
+        break;
+      case 'italic':
+        replacement = `*${selectedText || 'Italic text'}*`;
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'h1':
+        replacement = `\n# ${selectedText || 'Heading 1'}\n`;
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'h2':
+        replacement = `\n## ${selectedText || 'Heading 2'}\n`;
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'h3':
+        replacement = `\n### ${selectedText || 'Heading 3'}\n`;
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'quote':
+        replacement = `\n> ${selectedText || 'Quote'}\n`;
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'code':
+        if (selectedText.includes('\n')) {
+          replacement = `\n\`\`\`\n${selectedText || 'code'}\n\`\`\`\n`;
+        } else {
+          replacement = `\`${selectedText || 'code'}\``;
+        }
+        cursorOffset = selectedText ? replacement.length : -1;
+        break;
+      case 'link':
+        replacement = `[${selectedText || 'Link text'}](URL)`;
+        cursorOffset = selectedText ? replacement.length - 4 : -4;
+        break;
+    }
+
+    textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+    textarea.focus();
+
+    const newPosition = start + replacement.length + cursorOffset;
+    textarea.setSelectionRange(newPosition, newPosition);
+  }
+
+  init();
+</script>
+</body>
+</html>

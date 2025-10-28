@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            line-height: 1.8;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #20c997;
+            text-decoration: none;
+        }
+
+        nav a {
+            margin-left: 2rem;
+            color: #495057;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #20c997;
+        }
+
+        .post-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .post-header {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .post-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: #868e96;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-date {
+            font-size: 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 0.4rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .post-body {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        /* Markdown styling */
+        .post-body h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+            color: #212529;
+        }
+
+        .post-body h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 1.8rem 0 1rem;
+            color: #212529;
+        }
+
+        .post-body h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.8rem;
+            color: #212529;
+        }
+
+        .post-body p {
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .post-body strong {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .post-body em {
+            font-style: italic;
+            color: #495057;
+        }
+
+        .post-body ul, .post-body ol {
+            margin: 1rem 0 1.5rem 2rem;
+            line-height: 1.8;
+        }
+
+        .post-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-body blockquote {
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid #20c997;
+            background: #f8f9fa;
+            color: #495057;
+            font-style: italic;
+        }
+
+        .post-body code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .post-body pre {
+            background: #2d2d2d;
+            color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            line-height: 1.5;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: #f8f9fa;
+            font-size: 0.95em;
+        }
+
+        .post-body a {
+            color: #20c997;
+            text-decoration: none;
+            border-bottom: 1px solid #20c997;
+            transition: all 0.2s;
+        }
+
+        .post-body a:hover {
+            color: #1ba87e;
+            border-bottom-color: #1ba87e;
+        }
+
+        .post-body hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #20c997;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1ba87e;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #20c997;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: gap 0.2s;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-confirm {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .delete-confirm h3 {
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        .delete-confirm p {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+
+        .delete-confirm-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .post-header, .post-body {
+                padding: 2rem;
+            }
+
+            nav a {
+                margin-left: 1rem;
+            }
+
+            .post-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">devlog</a>
+        <nav>
+            <a href="index.html">Posts</a>
+            <a href="about.html">About</a>
+        </nav>
+    </div>
+</header>
+
+<div class="post-container">
+    <a href="index.html" class="back-button">← Back to List</a>
+
+    <div class="post-header">
+        <h1 class="post-title" id="postTitle"></h1>
+        <div class="post-meta">
+            <span class="post-date" id="postDate"></span>
+            <div id="postTags"></div>
+        </div>
+    </div>
+
+    <div id="postImageContainer"></div>
+
+    <div class="post-body" id="postContent"></div>
+
+    <div class="post-actions">
+        <button class="action-btn btn-primary" id="editBtn">✏️ Edit</button>
+        <button class="action-btn btn-danger" id="deleteBtn">🗑️ Delete</button>
+        <a href="index.html" class="action-btn btn-secondary">List</a>
+    </div>
+</div>
+
+<div class="modal" id="deleteModal">
+    <div class="delete-confirm">
+        <h3>Delete Post</h3>
+        <p>Are you sure you want to delete this post?<br>This action cannot be undone.</p>
+        <div class="delete-confirm-buttons">
+            <button class="action-btn btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="action-btn btn-danger" id="confirmDelete">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPostIndex = null;
+    let posts = [];
+
+    function init() {
+        const stored = localStorage.getItem('blogPosts');
+        if (stored) {
+            posts = JSON.parse(stored);
+        }
+
+        currentPostIndex = parseInt(localStorage.getItem('currentPostIndex'));
+
+        if (isNaN(currentPostIndex) || currentPostIndex < 0 || currentPostIndex >= posts.length) {
+            alert('Post not found.');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        renderPost();
+    }
+
+    function renderPost() {
+        const post = posts[currentPostIndex];
+
+        document.getElementById('postTitle').textContent = post.title;
+        document.getElementById('postDate').textContent = new Date(post.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const tagsContainer = document.getElementById('postTags');
+        tagsContainer.innerHTML = post.tags.map(tag =>
+            `<span class="tag">${tag}</span>`
+        ).join('');
+
+        if (post.image) {
+            document.getElementById('postImageContainer').innerHTML =
+                `<img src="${post.image}" alt="${post.title}" class="post-image">`;
+        }
+
+        const contentDiv = document.getElementById('postContent');
+        contentDiv.innerHTML = parseMarkdown(post.content);
+    }
+
+    function parseMarkdown(markdown) {
+        let html = markdown;
+
+        // Code blocks (```)
+        html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+        // Inline code (`)
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Headers (H1, H2, H3)
+        html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+
+        // Bold (**)
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // Italic (*)
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+        // Blockquotes (>)
+        html = html.replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>');
+
+        // Links [text](URL)
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        // Horizontal rule (---)
+        html = html.replace(/^---$/gm, '<hr>');
+
+        // Numbered lists
+        html = html.replace(/^\d+\.\s(.+)$/gm, function(match) {
+            return '<ol><li>' + match.replace(/^\d+\.\s/, '') + '</li></ol>';
+        });
+
+        // Unordered lists (-)
+        html = html.replace(/^[-*]\s(.+)$/gm, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+        // Merge consecutive ol/ul tags
+        html = html.replace(/<\/ol>\s*<ol>/g, '');
+        html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+        // Paragraphs (double line breaks)
+        const lines = html.split('\n');
+        let result = '';
+        let inParagraph = false;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+
+            if (line === '') {
+                if (inParagraph) {
+                    result += '</p>';
+                    inParagraph = false;
+                }
+                continue;
+            }
+
+            // Lines already wrapped in tags
+            if (line.startsWith('<h') || line.startsWith('<ul') || line.startsWith('<ol') ||
+                line.startsWith('<blockquote') || line.startsWith('<pre') ||
+                line.startsWith('<hr') || line.startsWith('<li')) {
+                if (inParagraph) {
+                    result += '</p>';
+                    inParagraph = false;
+                }
+                result += line + '\n';
+            } else {
+                if (!inParagraph) {
+                    result += '<p>';
+                    inParagraph = true;
+                } else {
+                    result += '<br>';
+                }
+                result += line;
+            }
+        }
+
+        if (inParagraph) {
+            result += '</p>';
+        }
+
+        return result;
+    }
+
+    document.getElementById('editBtn').addEventListener('click', function() {
+        localStorage.setItem('editPostIndex', currentPostIndex);
+        window.location.href = 'index.html';
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', function() {
+        document.getElementById('deleteModal').classList.add('active');
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', function() {
+        document.getElementById('deleteModal').classList.remove('active');
+    });
+
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        posts.splice(currentPostIndex, 1);
+        localStorage.setItem('blogPosts', JSON.stringify(posts));
+        alert('Post has been deleted.');
+        window.location.href = 'index.html';
+    });
+
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('active');
+        }
+    });
+
+    init();
+</script>
+</body>
+</html>

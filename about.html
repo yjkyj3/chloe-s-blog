@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - My Dev Blog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f8f9fa;
+      color: #212529;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #20c997;
+      text-decoration: none;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      color: #495057;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+
+    nav a:hover, nav a.active {
+      color: #20c997;
+    }
+
+    .about-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: white;
+      margin: 0 auto 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .about-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .about-section {
+      background: white;
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .about-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: #212529;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #20c997;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #495057;
+      margin-bottom: 1rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .skill-card {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .skill-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-name {
+      font-weight: 600;
+      color: #212529;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-level {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #20c997;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s;
+      font-weight: 500;
+    }
+
+    .contact-link:hover {
+      background: #1ba87e;
+      transform: translateY(-2px);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin-top: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #20c997;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.45rem;
+      top: 0.3rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #20c997;
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px #20c997;
+    }
+
+    .timeline-date {
+      font-weight: 600;
+      color: #20c997;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      color: #212529;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-desc {
+      color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+      .about-hero h1 {
+        font-size: 2rem;
+      }
+
+      .about-section {
+        padding: 2rem;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav a {
+        margin-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <a href="index.html" class="logo">devlog</a>
+    <nav>
+      <a href="index.html">Posts</a>
+      <a href="about.html" class="active">About</a>
+    </nav>
+  </div>
+</header>
+
+<div class="about-hero">
+  <div class="profile-image">👨‍💻</div>
+  <h1>Hello!</h1>
+  <p>I'm a developer who loves to learn and grow</p>
+</div>
+
+<div class="container">
+  <div class="about-section">
+    <h2>🙋‍♂️ About Me</h2>
+    <p>
+      Hello! I'm a developer who loves continuous learning and growth.
+    </p>
+    <p>
+      I enjoy learning new technologies and applying them, and I love sharing what I've learned by writing about it.
+      This blog is a space where I document what I've learned, my project experiences, and insights gained during development.
+    </p>
+    <p>
+      I want to contribute to a developer community that grows together, and I always strive to write good code and create better user experiences.
+    </p>
+  </div>
+
+  <div class="about-section">
+    <h2>💻 Tech Stack</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">⚛️</div>
+        <div class="skill-name">React</div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <div class="skill-name">CSS/Sass</div>
+        <div class="skill-level">Intermediate</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📘</div>
+        <div class="skill-name">TypeScript</div>
+        <div class="skill-level">Intermediate</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🟢</div>
+        <div class="skill-name">Node.js</div>
+        <div class="skill-level">Intermediate</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔥</div>
+        <div class="skill-name">Git</div>
+        <div class="skill-level">Advanced</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h2>🎯 Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2024 - Present</div>
+        <div class="timeline-title">Frontend Developer</div>
+        <div class="timeline-desc">Developing and maintaining modern web applications</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2023 - 2024</div>
+        <div class="timeline-title">Junior Developer</div>
+        <div class="timeline-desc">Participated in React-based projects and continuous learning</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2022 - 2023</div>
+        <div class="timeline-title">Started Learning Development</div>
+        <div class="timeline-desc">Learned web development basics and worked on toy projects</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h2>📧 Contact</h2>
+    <p>If you have any questions or would like to work together on a project, feel free to reach out!</p>
+    <div class="contact-links">
+      <a href="mailto:your.email@example.com" class="contact-link">
+        📧 Email
+      </a>
+      <a href="https://github.com" target="_blank" class="contact-link">
+        🐙 GitHub
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-link">
+        💼 LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
