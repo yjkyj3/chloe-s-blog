@@ -432,7 +432,24 @@
 
     function parseMarkdown(markdown) {
         let html = markdown;
+        html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
 
+        // 인라인 코드 (`)
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // 이미지 (![alt](url)) - 이 부분 추가!
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; border-radius: 8px; margin: 1.5rem 0;">');
+
+        // 제목 (H1, H2, H3)
+        html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+
+        // 굵게 (**)
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // 기울임 (*)
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
         // Code blocks (```)
         html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
 

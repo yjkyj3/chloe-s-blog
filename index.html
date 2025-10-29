@@ -518,8 +518,8 @@
 </header>
 
 <div class="hero">
-  <h1>Developer's Journal</h1>
-  <p>Learn, experience, and share</p>
+  <h1>Custom guitar pedal journey</h1>
+  <p>Chloe Kim</p>
 </div>
 
 <div class="container">
@@ -669,7 +669,7 @@ Test before soldering!
 4. Check for **shorts** before powering on
 
 Next up: how guitar pedal circuits actually work!`,
-      date: new Date('2024-10-20').toISOString(),
+      date: new Date('2025-08-20').toISOString(),
       tags: ['Electronics', 'Basics', 'High School'],
       icon: '⚡',
       image: null
@@ -770,7 +770,7 @@ Uses 3PDT switch
 - Compressed sustain
 
 Next post: introducing the **LPB-1 Booster** we'll actually build!`,
-      date: new Date('2024-10-21').toISOString(),
+      date: new Date('2025-09-11').toISOString(),
       tags: ['Guitar Pedal', 'Circuit Theory', 'Amplification'],
       icon: '🎸',
       image: null
@@ -888,7 +888,7 @@ Input ─ [0.1μF] ─ [100kΩ Vol] ─ Base
 - **Current**: 1~3mA (long battery life!)
 
 Next: parts and tools we need!`,
-      date: new Date('2024-10-22').toISOString(),
+      date: new Date('2025-09-22').toISOString(),
       tags: ['LPB-1', 'Booster', 'Build'],
       icon: '🔧',
       image: null
@@ -1066,7 +1066,7 @@ Tools:
 - [ ] Drill
 
 Next post: the actual **build process**!`,
-      date: new Date('2024-10-23').toISOString(),
+      date: new Date('2025-09-23').toISOString(),
       tags: ['Parts', 'Shopping List', 'Tools'],
       icon: '🛠️',
       image: null
@@ -1081,6 +1081,8 @@ Next post: the actual **build process**!`,
 ## Why Breadboard First?
 > Test before soldering! Mistakes? Just pull it out and reuse parts
 
+![Breadboard Layout](images/board1.jpg)
+
 ## Layout Order
 \`\`\`
 1. Set power rails (+9V, GND)
@@ -1089,6 +1091,8 @@ Next post: the actual **build process**!`,
 4. Connect capacitors
 5. Connect input/output
 \`\`\`
+
+![Completed Breadboard Circuit](images/board2.jpg)
 
 ## Voltage Check (Important!)
 **Use multimeter**:
@@ -1127,6 +1131,8 @@ Minimum 2.54mm (1 hole)
 - Secure PCB
 - Ventilate!
 
+![Starting to Solder](images/solderinging.jpg)
+
 ## Soldering Order
 
 **1. Resistors (low components first)**
@@ -1145,6 +1151,8 @@ Check black stripe direction!
 - Check E-B-C order
 - Avoid overheating! (under 3 seconds)
 
+![Me Soldering the PCB](images/soldering_byme.jpg)
+
 ## Good Solder Joint
 - Volcano shape
 - Smooth slope
@@ -1157,6 +1165,9 @@ Check black stripe direction!
 2. Check for shorts
 3. Measure component values
 
+![Completed PCB Front](images/soldering1.jpg)
+![Completed PCB Back](images/soldering2.jpg)
+
 # Step 4: Enclosure Work
 
 ## Hole Positions
@@ -1166,6 +1177,8 @@ Check black stripe direction!
 [Input] [Output]
 [Switch] [DC]
 \`\`\`
+
+![Housing with Drilled Holes](images/housing.jpg)
 
 ## Drill Sizes
 - LED: 6mm
@@ -1276,8 +1289,16 @@ You should definitely try it! 😊
 
 **Total build time**: 4~6 hours
 **Difficulty**: ★★☆☆☆
-**Satisfaction**: ★★★★★`,
-      date: new Date('2024-10-24').toISOString(),
+**Satisfaction**: ★★★★★
+
+# Testing My Pedal! 🎸
+
+Check out this video of testing a guitar pedal:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bHD4c0XgP7U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+This is the kind of sound you can expect! Can't wait to test mine!`,
+      date: new Date('2025-10-04').toISOString(),
       tags: ['Build Process', 'Soldering', 'DIY'],
       icon: '⚙️',
       image: null
@@ -1329,11 +1350,7 @@ You should definitely try it! 😊
       card.className = 'post-card';
 
       const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
-      const displayDate = new Date(post.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).replace(/\//g, '.');
+      const displayDate = new Date(post.date).toISOString().split('T')[0].replace(/-/g, '.');
 
       card.innerHTML = `
                     <div class="post-thumbnail">
